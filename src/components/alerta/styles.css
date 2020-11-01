@@ -1,0 +1,7 @@
+.ant-modal-footer {
+  border: none !important;
+  padding-bottom: 30px!important;
+}
+.ant-modal-header {
+    border-radius: 10px!important;
+}
