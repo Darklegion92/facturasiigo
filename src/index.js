@@ -6,16 +6,15 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import DataProvider from './components/context/context';
 import reportWebVitals from './reportWebVitals';
 
+
 ReactDOM.render(
-	<React.StrictMode>
-		<DataProvider>
-			<Router>
-				<App />
-			</Router>
-		</DataProvider>
-	</React.StrictMode>,
-	document.getElementById('root')
-);
+	<DataProvider>
+		<Router>
+			<App /> 
+		</Router>
+	</DataProvider>
+   , 
+document.getElementById('root'));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
