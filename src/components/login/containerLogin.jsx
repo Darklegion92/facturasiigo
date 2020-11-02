@@ -1,16 +1,13 @@
-import React, { useState } from 'react';
-import {
-	Row,
-	Col,
-	Card,
-	Typography,
-} from 'antd';
+import React, { useContext } from 'react';
+import { DataContext } from '../context/context';
+import { Row, Col, Card, Typography } from 'antd';
 import logo from '../../assets/logo.jpg';
 import 'antd/dist/antd.css';
 import { LoginForm } from './loginForm';
 
+export const Login = (props) => {
+	const { mtdLogin } = useContext(DataContext);
 
-const Login = () => {
 	const { Title } = Typography;
 	const gridStyle = {
 		width: '88%',
@@ -20,13 +17,12 @@ const Login = () => {
 	};
 
 	const onFinish = (values) => {
-		console.log('Success:', values);
+		mtdLogin(values, props);
 	};
 
 	const onFinishFailed = (errorInfo) => {
-		console.log('Failed:', errorInfo);
+		console.error('Failed:', errorInfo);
 	};
-
 
 	return (
 		<Row>
@@ -45,11 +41,7 @@ const Login = () => {
 						<Title level={3} style={{ marginLeft: '40px' }}>
 							<strong>Bienvenido</strong>
 						</Title>
-						<LoginForm
-						onFinish={onFinish}
-						onFinishFailed={onFinishFailed}
-						/>
-							
+						<LoginForm onFinish={onFinish} onFinishFailed={onFinishFailed} />
 					</Card.Grid>
 				</Card>
 			</Col>
@@ -57,5 +49,3 @@ const Login = () => {
 		</Row>
 	);
 };
-
-export default Login;

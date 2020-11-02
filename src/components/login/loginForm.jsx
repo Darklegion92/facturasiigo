@@ -12,7 +12,9 @@ import {
 } from '@ant-design/icons';
 
 export const LoginForm = (props) => {
+
     const {onFinish, onFinishFailed } = props;
+    
     return ( <Form
         name='basic'
         initialValues={{ remember: true }}
@@ -39,7 +41,7 @@ export const LoginForm = (props) => {
         <div style={{ marginTop: '8px' }}>
             <Form.Item
                 label='Password'
-                name='contraseña'
+                name='password'
                 rules={[
                     {
                         required: true,
