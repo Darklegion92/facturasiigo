@@ -5,7 +5,7 @@ import logo from '../../assets/logo.jpg';
 import 'antd/dist/antd.css';
 import { LoginForm } from './loginForm';
 
-export const Login = (props) => {
+export const ContainerLogin = (props) => {
 	const { mtdLogin } = useContext(DataContext);
 
 	const { Title } = Typography;

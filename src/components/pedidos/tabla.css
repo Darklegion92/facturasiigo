@@ -1,0 +1,5 @@
+.tabla-pedidos .ant-table-tbody tr.ant-table-row.ant-table-row-level-0:hover{
+    background-color: black!important;
+    transition: background-color .5s;
+    cursor: pointer;
+  }
