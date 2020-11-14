@@ -1,196 +1,298 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react'
 import {
-	Alert,
-	Modal,
-	Table,
-	Button,
-	Form,
-	Input,
-	Row,
-	Col,
-	message,
-	InputNumber,
-	Typography,
-	Select
-} from 'antd';
-import { EditOutlined } from '@ant-design/icons';
-import './tabla.css';
+  Alert,
+  Modal,
+  Table,
+  Button,
+  Form,
+  Input,
+  Row,
+  Col,
+  message,
+  InputNumber,
+  Typography,
+  Select
+} from 'antd'
+import { EditOutlined } from '@ant-design/icons'
+import './tabla.css'
+const { Title, Text } = Typography
+const { Option } = Select
+export const ModalDetalle = props => {
+  const [total, setTotal] = useState(0)
+  const [totalArt, setTotalArt] = useState(0)
+  const [cantidad, setCantidad] = useState(1)
+  const [valor, setValor] = useState(0)
 
-export const ModalDetalle = (props) => {
-	const { Title, Text } = Typography;
-	const { Option } = Select;
-	const [factura, setFactura] = useState(false);
+  const {
+    consultarArticuloCodigo,
+    visibleDetalle,
+    toggleDetalle,
+    seleccionarArticulo,
+    onSearch,
+    agregarItem,
+    dataPedidoEditar,
+    actualizarDataPedido,
+    columnasPedidosModaldetalle,
+    dataModalEditar,
+    eliminarLinea,
+    datosArticulo,
+    productosData
+  } = props
 
-	const {
-		visibleDetalle,
-		toggleDetalle,
-		dataPedidosDetalle,
-		columnasDetalle,
-		dataPedidoEditar,
-		actualizarDataPedido,
-		columnasPedidosModaldetalle,
-		dataModalEditar,
-		eliminarLinea,
-		productosData
-	} = props;
-	console.log(dataPedidoEditar);
-	console.log(columnasDetalle);
-	console.log(dataPedidosDetalle);
+  const refCodigo = useRef(null)
+  const refDescripcion = useRef(null)
+  const refCantidad = useRef(null)
+  const refValor = useRef(null)
 
-	const onFinish = (values) => {
-		console.log('llego con los siguientes datos');
-		console.log(values);
+  useEffect(() => {
+    refCodigo.current.select()
+  }, [])
 
-		actualizarDataPedido(values, factura);
-	};
+  useEffect(() => {
+    let t = 0
+    dataModalEditar.forEach(articulo => {
+      t = t + articulo.Total
+    })
+    setTotal(t)
+  }, [dataModalEditar])
 
-	const facturar = () => {
-		setFactura(true);
-	};
+  useEffect(() => {
+    if (datosArticulo) {
+      setValor(datosArticulo.PriceList1)
+      setCantidad(1)
+    }
+  }, [datosArticulo])
 
-	const guardar = () => {
-		setFactura(false);
-	};
-	const onFinishFailed = (errorInfo) => {
-		console.error('Failed:', errorInfo);
-		message.error(errorInfo);
-	};
+  const onPressEnter = async e => {
+    e.preventDefault()
+    const value = e.target.value
+    switch (e.target.id) {
+      case 'codigo':
+        const resp = await consultarArticuloCodigo(value)
+        if (resp === true) refCantidad.current.select()
+        else refCodigo.current.select()
+        break
+      case 'cantidad':
+        if (value) refValor.current.select()
+        break
+      case 'valorUnitario':
+        const respItem = await agregarItem(valor, cantidad, totalArt)
+        if (respItem) {
+          setTotalArt(0)
+          refCodigo.current.select()
+        }
+        break
 
-	const handleCancel = () => {
-		toggleDetalle();
-	};
+      default:
+        break
+    }
+  }
 
-	return (
-		<>
-			<Modal
-				style={{ width: '800px' }}
-				title='Editar Orden'
-				style={{ top: 20 }}
-				visible={visibleDetalle}
-				onOk={() => toggleDetalle()}
-				onCancel={() => toggleDetalle()}
-				width={1000}
-				footer={null}>
-				<Form
-					name='basic'
-					onFinish={onFinish}
-					onFinishFailed={onFinishFailed}
-					layout='vertical '>
-					<Row gutter={16}>
-						<Col
-							className='gutter-row'
-							span={4}
-							style={{ marginBottom: '10px' }}>
-							<Title level={4}>Documento</Title>
-							<Text>1.093.738.019</Text>
-						</Col>
-						<Col
-							className='gutter-row'
-							span={8}
-							style={{ marginBottom: '10px' }}>
-							<Title level={4}>Nombres</Title>
-							<Text> Pepito Pablo Perez alcazar</Text>
-						</Col>
-						<Col
-							className='gutter-row'
-							span={12}
-							style={{ marginBottom: '10px' }}></Col>
-						<Col className='gutter-row' span={3}>
-							<Form.Item label='Codigo.' name='codigo'>
-								<Input
-									size='short'
-									autoComplete='off'
-									prefix={<EditOutlined />}
-								/>
-							</Form.Item>
-						</Col>
-						<Col className='gutter-row' span={10}>
-							<Form.Item
-									label='Descripcion'
-									name='descripcion'
-									rules={[
-										{
-											required: true,
-											message: 'Favor ingresar Grupo!',
-										},
-									]}>
-									<Select placeholder='Seleccione...'
-										showSearch
-										filterOption={(input, option) =>
-											option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-										  }
-									>
-										{productosData.map((datos) => {
-											return <Option key={datos.id}>{datos.dato}</Option>;
-										})}
-									</Select>
-								</Form.Item>
-						</Col>
-						<Col className='gutter-row' span={3}>
-							<Form.Item label='Cantidad.' name='cantidad'>
-								<InputNumber size='short' autoComplete='off' />
-							</Form.Item>
-						</Col>
-						<Col className='gutter-row' span={3}>
-							<Form.Item label='Valor Unitario.' name='valorUnitario'>
-								<InputNumber size='short' autoComplete='off' />
-							</Form.Item>
-						</Col>
-						<Col className='gutter-row' span={3}>
-							<Title level={3}>Total</Title>
-							<Text>$ 5.0000</Text>
-						</Col>
-					</Row>
-					<Row gutter={16}>
-						<Col className='gutter-row' span={24}>
-							<Table
-								className='tabla-pedidos'
-								columns={columnasPedidosModaldetalle}
-								dataSource={dataModalEditar}
-								onRow={(record) => {
-									return {
-										onDoubleClick: () => {
-											eliminarLinea(record);
-										},
-									};
-								}}
-							/>
-						</Col>
-						<Col className='gutter-row' span={9} offset={15}>
-							<Text mark>
-								* Doble 'Click' sobre el producto que desea eliminar *
-							</Text>
-						</Col>
-						<Col className='gutter-row' span={24}>
-							<Title level={3}>
-								Total Pedido
-								<Alert
-									message='$ 15.0000'
-									type='info'
-									style={{ maxWidth: '180px' }}
-								/>{' '}
-							</Title>
-						</Col>
-						<Col className='gutter-row' span={8}>
-							<Form.Item>
-								<Button htmlType='submit' onClick={guardar}>
-									Guardar
-								</Button>
-							</Form.Item>
-						</Col>
-						<Col className='gutter-row' span={8}>
-							<Form.Item>
-								<Button htmlType='submit' onClick={facturar}>
-									Facturar
-								</Button>
-							</Form.Item>
-						</Col>
-						<Col className='gutter-row' span={8}>
-							<Button onClick={handleCancel}>Cancelar</Button>
-						</Col>
-					</Row>
-				</Form>
-			</Modal>
-		</>
-	);
-};
+  const facturar = () => {
+    actualizarDataPedido(true)
+  }
+
+  const guardar = () => {
+    actualizarDataPedido(false)
+  }
+
+  const onValuesChange = e => {
+    let t = 0
+    if (e.cantidad) {
+      setCantidad(e.cantidad)
+      t = e.cantidad * valor
+    } else if (e.valorUnitario) {
+      setValor(e.valorUnitario)
+      t = e.valorUnitario * cantidad
+    } else if (e.descripcion) {
+      if (seleccionarArticulo(e.descripcion)) {
+        refCantidad.current.select()
+      }
+    }
+
+    if (t > 0) {
+      setTotalArt(t)
+    }
+  }
+
+  const handleCancel = () => {
+    toggleDetalle()
+  }
+
+  return (
+    <>
+      <Modal
+        style={{ width: '800px' }}
+        title='Editar Orden'
+        style={{ top: 20 }}
+        visible={visibleDetalle}
+        onOk={() => toggleDetalle()}
+        onCancel={() => toggleDetalle()}
+        width={1000}
+        footer={null}
+      >
+        <Form
+          layout='vertical'
+          fields={
+            datosArticulo
+              ? [
+                  { name: 'valorUnitario', value: valor },
+                  {
+                    name: 'descripcion',
+                    value: datosArticulo.Description
+                  },
+                  {
+                    name: 'cantidad',
+                    value: cantidad
+                  }
+                ]
+              : [
+                  { name: 'valorUnitario', value: 0 },
+                  {
+                    name: 'descripcion',
+                    value: ''
+                  },
+                  {
+                    name: 'cantidad',
+                    value: 1
+                  },
+                  {
+                    name: 'total',
+                    value: 0
+                  }
+                ]
+          }
+          onValuesChange={onValuesChange}
+        >
+          <Row gutter={16}>
+            <Col
+              className='gutter-row'
+              span={4}
+              style={{ marginBottom: '10px' }}
+            >
+              <Title level={4}>Documento</Title>
+              <Text>{dataPedidoEditar.Identification}</Text>
+            </Col>
+            <Col
+              className='gutter-row'
+              span={8}
+              style={{ marginBottom: '10px' }}
+            >
+              <Title level={4}>Nombres</Title>
+              <Text> {dataPedidoEditar.FullName}</Text>
+            </Col>
+            <Col
+              className='gutter-row'
+              span={12}
+              style={{ marginBottom: '10px' }}
+            ></Col>
+            <Col className='gutter-row' span={3}>
+              <Form.Item label='Código:' name='codigo'>
+                <Input
+                  onPressEnter={onPressEnter}
+                  ref={refCodigo}
+                  size='short'
+                  autoComplete='off'
+                  prefix={<EditOutlined />}
+                />
+              </Form.Item>
+            </Col>
+            <Col className='gutter-row' span={10}>
+              <Form.Item label='Descripción:' name='descripcion'>
+                <Select
+                  ref={refDescripcion}
+                  showSearch
+                  onSearch={onSearch}
+                  filterOption={(input, option) =>
+                    option.children
+                      .toLowerCase()
+                      .indexOf(input.toLowerCase()) >= 0
+                  }
+                >
+                  {productosData &&
+                    productosData.map((datos, i) => {
+                      return <Option key={i}>{datos.Description}</Option>
+                    })}
+                </Select>
+              </Form.Item>
+            </Col>
+            <Col className='gutter-row' span={3}>
+              <Form.Item label='Cantidad:' name='cantidad'>
+                <InputNumber
+                  min={1}
+                  onPressEnter={onPressEnter}
+                  size='short'
+                  autoComplete='off'
+                  ref={refCantidad}
+                />
+              </Form.Item>
+            </Col>
+            <Col className='gutter-row' span={3}>
+              <Form.Item label='Valor Unitario:' name='valorUnitario'>
+                <InputNumber
+                  size='short'
+                  autoComplete='off'
+                  ref={refValor}
+                  onPressEnter={onPressEnter}
+                />
+              </Form.Item>
+            </Col>
+            <Col className='gutter-row' span={3}>
+              <Form.Item label='Total' name='total'>
+                <Text>$ {totalArt}</Text>
+              </Form.Item>
+            </Col>
+          </Row>
+          <Row gutter={16}>
+            <Col className='gutter-row' span={24}>
+              <Table
+                className='tabla-pedidos'
+                columns={columnasPedidosModaldetalle}
+                dataSource={dataModalEditar}
+                onRow={record => {
+                  return {
+                    onDoubleClick: () => {
+                      eliminarLinea(record)
+                    }
+                  }
+                }}
+              />
+            </Col>
+            <Col className='gutter-row' span={9} offset={15}>
+              <Text mark>
+                * Doble 'Click' sobre el producto que desea eliminar *
+              </Text>
+            </Col>
+            <Col className='gutter-row' span={24}>
+              <Title level={3}>
+                Total Pedido
+                <Alert
+                  message={'$ ' + total}
+                  type='info'
+                  style={{ maxWidth: '180px' }}
+                />{' '}
+              </Title>
+            </Col>
+            <Col className='gutter-row' span={8}>
+              <Form.Item>
+                <Button htmlType='submit' onClick={guardar}>
+                  Guardar
+                </Button>
+              </Form.Item>
+            </Col>
+            <Col className='gutter-row' span={8}>
+              <Form.Item>
+                <Button htmlType='submit' onClick={facturar}>
+                  Facturar
+                </Button>
+              </Form.Item>
+            </Col>
+            <Col className='gutter-row' span={8}>
+              <Button onClick={handleCancel}>Cancelar</Button>
+            </Col>
+          </Row>
+        </Form>
+      </Modal>
+    </>
+  )
+}
