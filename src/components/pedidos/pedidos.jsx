@@ -96,7 +96,7 @@ export const Pedidos = (props) => {
 			</Card>
 			<Row>
 				<Col span={24}>
-        <Table 
+        <Table  className="tabla-pedidos"
 					columns={columnasPedidos} dataSource={dataPedidos} 
 					onRow={(record, rowIndex) => {
 						return {

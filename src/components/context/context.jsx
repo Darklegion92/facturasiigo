@@ -19,13 +19,50 @@ const DataProvider = (props) => {
 	const [visibleDetalle, setVisibleDetalle] = useState(false);
 	const [dataPedidoEditar, setDataPedidoEditar] = useState(null);
 	const [dataPedidoModificada, setDataPedidoModificada] = useState(null);
+	const [
+		columnasPedidosModaldetalle,
+		setcolumnasPedidosModaldetalle,
+	] = useState(null);
+	const [visibleModalConfirmacion, setVisibleModalConfirmacion] = useState(false);
+	const [dataModalEditar, setDataModalEditar] = useState(null);
+	const [mensajeModal, setMensajeModal] = useState('');
+	const [borrar, setBorrar] =useState(null)
+	const [columnasDataFactura, setColumnasDataFactura] =useState(null)
+	const [productosData, setProductosData] = useState(null);
+	const [nombresData, setNombresData] = useState(null);
+	const [dataTablaProducto, setDataTablaProducto] = useState(null);
+
+	
+
+
+	/// eliminar este codigo cuando se haga la busqueda de producto desde la db
+	useEffect(() => {
+		try {
+			getProductosData();
+		} catch (error) {
+			console.error(error);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	/// eliminar este codigo cuando se haga la busqueda de producto desde la db
+
+	/// eliminar este codigo cuando se haga la busqueda de nombres desde la db
+	useEffect(() => {
+		try {
+			getNombresData();
+		} catch (error) {
+			console.error(error);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+	/// eliminar este codigo cuando se haga la busqueda de nombres desde la db
+	
 
 	// const mtdLoading = (estado) => {
 	// 	setVisibleLoading(estado);
 	// };
 
 	const mtdLogin = async (datos, props) => {
-		
 		message.info('logeado');
 		setLogeado(true);
 		getEstadoData();
@@ -87,7 +124,6 @@ const DataProvider = (props) => {
 	};
 
 	const getEstadoData = () => {
-		
 		setEstadoData([{ dato: 'cocacola', id: 'cocacola' }]);
 	};
 
@@ -96,7 +132,6 @@ const DataProvider = (props) => {
 		console.log('llego con los siguientes datos');
 		console.log(values);
 		parametrosTablaPedidos();
-		
 	};
 
 	const onFinishFailed = (errorInfo) => {
@@ -105,7 +140,6 @@ const DataProvider = (props) => {
 	};
 	//// envio los datos de busqueda fin
 	const llenarEncabezado = () => {
-		console.log('llenara encabezado')
 		setcolumnasPedidos([
 			{
 				title: 'Codigo',
@@ -123,10 +157,8 @@ const DataProvider = (props) => {
 				key: 'estado',
 			},
 		]);
-	}
+	};
 	const parametrosTablaPedidos = () => {
-		
-
 		setDataPedidos([
 			{
 				key: '1',
@@ -150,19 +182,139 @@ const DataProvider = (props) => {
 	};
 	/// logica modal detalle pedido
 
+	
+
+
+
+	const enviarDatosModalEditarPedidos = (data) => {
+		llenarEncabezadoModalPedido();
+		parametrosTablaModalEditar();
+		setDataPedidoEditar(data);
+	};
+
+	const llenarEncabezadoModalPedido = () => {
+		setcolumnasPedidosModaldetalle([
+			{
+				title: 'Codigo',
+				dataIndex: 'codigo',
+				key: 'codigo',
+			},
+			{
+				title: 'Cliente',
+				dataIndex: 'cliente',
+				key: 'cliente',
+			},
+			{
+				title: 'Estado',
+				dataIndex: 'estado',
+				key: 'estado',
+			},
+		]);
+	};
+
+	const parametrosTablaModalEditar = () => {
+		setDataModalEditar([
+			{
+				key: '1',
+				codigo: '1234',
+				cliente: 'John Brown',
+				estado: 'algun estado',
+			},
+			{
+				key: '2',
+				codigo: '2255',
+				cliente: 'John algo',
+				estado: 'algun estado',
+			},
+			{
+				key: '3',
+				codigo: '1234',
+				cliente: 'John mas',
+				estado: 'algun estado',
+			},
+		]);
+	};
+
 	const toggleDetalle = () => {
-		console.log('cambiara estado')
 		setVisibleDetalle(!visibleDetalle);
 	};
 
-	const enviarDatosModalEditarPedidos = (data) => {
-	setDataPedidoEditar(data)
+	// activara o desactivara el modal para confirmar una accion
+	const toggleConfirmar = () => {
+		setVisibleModalConfirmacion(!visibleModalConfirmacion);
+	};
+
+	const eliminarLinea = (borrar) => {
+		setBorrar(borrar)
+		setMensajeModal(`Eliminara producto ${borrar.cliente}`)
+		toggleConfirmar()
+		
 	}
 
-	const actualizarDataPedido = (data) => {
-		
-		setDataPedidoModificada(data)
+	const confirmoAccion = () => {
+			setDataModalEditar(dataModalEditar.filter( fila => fila.key !== borrar.key ))
+			toggleConfirmar()
 	}
+	const actualizarDataPedido = (data, factura) => {
+		console.log(factura)
+		// factura = true es facturar ::::: factura = false es solo guardar
+		/// estan llegando los datos de la parte del formulario del modal pedido ::: data
+		/// la data de la tabla del modal pedido esta guardada en ::::: dataModalEditar 
+		/// la data se guarda en   :::::  dataPedidoModificada :::: metodo setDataPedidoModificada
+		setDataPedidoModificada(data);
+		toggleDetalle()
+	};
+
+
+	// facturacion inicio
+	
+
+	const llenarEncabezadoFactura = () => {
+		setColumnasDataFactura([
+			{
+				title: 'Codigo',
+				dataIndex: 'codigo',
+				key: 'codigo',
+			},
+			{
+				title: 'Producto',
+				dataIndex: 'producto',
+				key: 'producto',
+			},
+			{
+				title: 'Cantidad',
+				dataIndex: 'cantidad',
+				key: 'cantidad',
+			},
+			{
+				title: 'Valor Unidad',
+				dataIndex: 'valor',
+				key: 'valor',
+			},
+		]);
+	};
+
+	const agregarProducto = () => {
+		setDataTablaProducto([
+			{
+				key: '1',
+				codigo: '1234',
+				producto: 'John Brown',
+				cantidad: 5,
+				valor: 1500
+			},
+		]);
+	};
+
+	/// aqui hara la busqueda de los productos tempoalmente cargamos una lista
+	const getProductosData = () => {
+		setProductosData([{dato: 'cocacola', id: 'cocacola'}, {dato: 'leche', id: 'leche'}]);
+	};
+
+	/// aqui hara la busqueda de los nombres tempoalmente cargamos una lista
+	const getNombresData = () => {
+		setNombresData([{dato: 'pepe suarez', id: 'pepe'}, {dato: 'carlos perez', id: 'carlos'}]);
+	};
 
 	/////
 	return (
@@ -180,7 +332,20 @@ const DataProvider = (props) => {
 				visibleDetalle,
 				enviarDatosModalEditarPedidos,
 				dataPedidoEditar,
-				actualizarDataPedido
+				actualizarDataPedido,
+				columnasPedidosModaldetalle,
+				dataModalEditar,
+				eliminarLinea,
+				visibleModalConfirmacion, 
+				toggleConfirmar, 
+				mensajeModal,
+				confirmoAccion,
+				columnasDataFactura,
+				llenarEncabezadoFactura,
+				productosData,
+				nombresData,
+				dataTablaProducto,
+				agregarProducto 
 			}}>
 			{props.children}
 			<Alerta modal={visibleModal} setModal={setVisibleModal} />
