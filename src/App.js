@@ -1,20 +1,20 @@
-import React, { useContext } from 'react'
-import { BrowserRouter, Switch, Route, Redirect, Link } from 'react-router-dom'
-import { DataContext } from './components/context/context'
-import { Loading } from './components/loading/loading'
-import { ContainerLogin } from './components/login/containerLogin'
-import Default from './components/Default/Default'
-import ProtecRoutes from './components/Routes/ProtecRoutes'
-import FreeRoute from './components/Routes/FreeRoute'
-import { Pedidos } from './components/pedidos/pedidos'
-import 'antd/dist/antd.css'
-import { Layout, Menu, Breadcrumb } from 'antd'
-import { ModalDetalle } from './components/pedidos/modalDetalle'
-import { Confirmacion } from './components/modal/confirmacion'
-import { Factura } from './components/factura/factura'
+import React, { useContext } from "react";
+import { BrowserRouter, Switch, Route, Redirect, Link } from "react-router-dom";
+import { DataContext } from "./components/context/context";
+import { Loading } from "./components/loading/loading";
+import { ContainerLogin } from "./components/login/containerLogin";
+import Default from "./components/Default/Default";
+import ProtecRoutes from "./components/Routes/ProtecRoutes";
+import FreeRoute from "./components/Routes/FreeRoute";
+import { Pedidos } from "./components/pedidos/pedidos";
+import "antd/dist/antd.css";
+import { Layout, Menu, Breadcrumb } from "antd";
+import { ModalDetalle } from "./components/pedidos/modalDetalle";
+import { Confirmacion } from "./components/modal/confirmacion";
+import { Factura } from "./components/factura/factura";
 
 export const App = () => {
-  const { Header, Content } = Layout
+  const { Header, Content } = Layout;
 
   const {
     logeado,
@@ -50,8 +50,8 @@ export const App = () => {
     cosultarArticuloNombre,
     agregarProducto,
     agregarItemFactura,
-    seleccionarArticulo
-  } = useContext(DataContext)
+    seleccionarArticulo,
+  } = useContext(DataContext);
 
   return (
     <>
@@ -59,21 +59,21 @@ export const App = () => {
         {logeado ? (
           <>
             <Header>
-              <div className='logo' />
-              <Menu theme='dark' mode='horizontal' defaultSelectedKeys={['1']}>
-                <Menu.Item key='1'>
-                  <Link to='/pedidos'>Orden</Link>
+              <div className="logo" />
+              <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["1"]}>
+                <Menu.Item key="1">
+                  <Link to="/pedidos">Orden</Link>
                 </Menu.Item>
-                <Menu.Item key='2'>
-                  <Link to='/facturas'>Factura</Link>
+                <Menu.Item key="2">
+                  <Link to="/facturas">Factura</Link>
                 </Menu.Item>
               </Menu>
             </Header>
-            <Content style={{ padding: '0 50px' }}>
+            <Content style={{ padding: "0 50px" }}>
               <Switch>
-                <FreeRoute exact path='/' component={ContainerLogin} />
+                <FreeRoute exact path="/" component={ContainerLogin} />
                 <ProtecRoutes
-                  path='/pedidos'
+                  path="/pedidos"
                   children={
                     <Pedidos
                       onFinish={onFinish}
@@ -87,7 +87,7 @@ export const App = () => {
                   }
                 />
                 <ProtecRoutes
-                  path='/facturas'
+                  path="/facturas"
                   children={
                     <Factura
                       consultarClienteCodigo={consultarClienteCodigo}
@@ -114,8 +114,8 @@ export const App = () => {
           </>
         ) : (
           <>
-            <FreeRoute exact path='/' component={ContainerLogin} />
-            <Redirect to='/' />
+            <FreeRoute exact path="/" component={ContainerLogin} />
+            <Redirect to="/" />
           </>
         )}
       </BrowserRouter>
@@ -143,7 +143,6 @@ export const App = () => {
         confirmoAccion={confirmoAccion}
         mensaje={mensajeModal}
       />
-      //Pendiente
       <Confirmacion
         visibleModalConfirmacion={visibleModalConfirmacionItemFactura}
         toggleConfirmar={toggleConfirmarItemFactura}
@@ -151,5 +150,5 @@ export const App = () => {
         mensaje={mensajeModal}
       />
     </>
-  )
-}
+  );
+};
