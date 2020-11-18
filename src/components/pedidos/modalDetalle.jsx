@@ -48,7 +48,7 @@ export const ModalDetalle = (props) => {
   useEffect(() => {
     refCodigo.current.select();
   }, []);
-
+  console.log(dataModalEditar);
   useEffect(() => {
     let t = 0;
     dataModalEditar.forEach((articulo) => {
@@ -67,7 +67,11 @@ export const ModalDetalle = (props) => {
   useEffect(() => {
     if (dataPedidoEditar) {
       setDireccion(dataPedidoEditar.Address);
-      setTelefono(dataPedidoEditar.Phone.Number);
+      setTelefono(
+        dataPedidoEditar.Phone !== undefined
+          ? dataPedidoEditar.Phone.Number
+          : ""
+      );
     }
   }, [dataPedidoEditar]);
 

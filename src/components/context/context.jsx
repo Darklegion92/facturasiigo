@@ -6,7 +6,7 @@ export const DataContext = React.createContext();
 
 const DataProvider = (props) => {
   /** esto se debe poner en un archivo de configuracion */
-  const URL = "http://45.82.72.196:3001/";
+  const URL = "http://45.82.72.196:8085/";
 
   // const [logeado, setLogeado] = useState(false);
   const [logeado, setLogeado] = useState(false);
