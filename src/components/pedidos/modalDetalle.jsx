@@ -206,7 +206,7 @@ export const ModalDetalle = props => {
               <Title level={4}>Nombres</Title>
               <Text> {dataPedidoEditar.FullName}</Text>
             </Col>
-            <Col className='gutter-row' span={9}>
+            <Col className='gutter-row' span={8}>
               <Form.Item label='Direccion:' name='direccion'>
                 <Input
                   onPressEnter={onPressEnter}
@@ -216,7 +216,7 @@ export const ModalDetalle = props => {
                 />
               </Form.Item>
             </Col>
-            <Col className='gutter-row' span={4}>
+            <Col className='gutter-row' span={3}>
               <Form.Item label='Teléfono:' name='telefono'>
                 <Input
                   onPressEnter={onPressEnter}
@@ -224,6 +224,11 @@ export const ModalDetalle = props => {
                   prefix={<EditOutlined />}
                   autoComplete='off'
                 />
+              </Form.Item>
+            </Col>
+            <Col className='gutter-row' span={2}>
+              <Form.Item label='Días:' name='diascredito'>
+                <Text>{dataPedidoEditar.DiasCredito}</Text>
               </Form.Item>
             </Col>
             <Col className='gutter-row' span={3}>
