@@ -51,6 +51,8 @@ export const App = () => {
     agregarProducto,
     agregarItemFactura,
     seleccionarArticulo,
+    editar,
+    editoDatos
   } = useContext(DataContext);
 
   return (
@@ -142,6 +144,8 @@ export const App = () => {
         toggleConfirmar={toggleConfirmar}
         confirmoAccion={confirmoAccion}
         mensaje={mensajeModal}
+        editar={editar}
+        editoDatos={editoDatos}
       />
       <Confirmacion
         visibleModalConfirmacion={visibleModalConfirmacionItemFactura}

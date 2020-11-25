@@ -6,7 +6,7 @@ export const DataContext = React.createContext()
 
 const DataProvider = props => {
   /** esto se debe poner en un archivo de configuracion */
-  const URL = 'http://localhost:8085/'
+  const URL = 'http://192.168.0.101:8085/'
 
   // const [logeado, setLogeado] = useState(false);
   const [logeado, setLogeado] = useState(false)
@@ -40,6 +40,7 @@ const DataProvider = props => {
   const [productosData, setProductosData] = useState([])
   const [nombresData, setNombresData] = useState(null)
   const [dataTablaProducto, setDataTablaProducto] = useState(null)
+  const [editar, setEditar]= useState(null)
 
   //Inicia al arrancar las validaciones
   useEffect(() => {
@@ -529,6 +530,7 @@ const DataProvider = props => {
 
   const eliminarLinea = (borrar, i) => {
     setBorrar(i)
+    setEditar(borrar)
     setMensajeModal(`Eliminara producto ${borrar.Descripcion}`)
     toggleConfirmar()
   }
@@ -539,12 +541,17 @@ const DataProvider = props => {
   }
 
   const confirmoAccion = () => {
+    console.log('mando a borrar y no a editar')
     let data = [].slice.call(dataModalEditar)
     data.splice(borrar, 1)
     setDataModalEditar(data)
     toggleConfirmar()
   }
 
+  const editoDatos = (datosEditados) => {
+    console.log('si edito datos')
+    toggleConfirmar()
+  }
   const confirmoAccionItemFactura = () => {
     let data = [].slice.call(dataTablaProducto)
     data.splice(borrar, 1)
@@ -660,6 +667,8 @@ const DataProvider = props => {
   return (
     <DataContext.Provider
       value={{
+        editoDatos,
+        editar,
         columnasPedidos,
         seleccionarArticulo,
         eliminarItemFactura,
