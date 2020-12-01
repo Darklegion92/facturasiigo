@@ -51,8 +51,9 @@ export const App = () => {
     agregarProducto,
     agregarItemFactura,
     seleccionarArticulo,
+    calcularDescuento,
     editar,
-    editoDatos
+    editoDatos,
   } = useContext(DataContext);
 
   return (
@@ -137,6 +138,7 @@ export const App = () => {
           agregarItem={agregarItem}
           onSearch={cosultarArticuloNombre}
           seleccionarArticulo={seleccionarArticulo}
+          calcularDescuento={calcularDescuento}
         />
       ) : null}
       <Confirmacion
