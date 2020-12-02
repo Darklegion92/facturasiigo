@@ -7,7 +7,7 @@ export const DataContext = React.createContext();
 
 const DataProvider = (props) => {
   /** esto se debe poner en un archivo de configuracion */
-  const URL = "http://45.82.72.196:8085/";
+  const URL = "http://localhost:8085/";
 
   // const [logeado, setLogeado] = useState(false);
   const [logeado, setLogeado] = useState(false);
@@ -21,6 +21,7 @@ const DataProvider = (props) => {
   const [dataPedidoEditar, setDataPedidoEditar] = useState(null);
   const [datosCliente, setDatosCliente] = useState(null);
   const [datosArticulo, setDatosArticulo] = useState(null);
+  const [bodegas, setBodegas] = useState([]);
   const [
     columnasPedidosModaldetalle,
     setcolumnasPedidosModaldetalle,
@@ -56,6 +57,22 @@ const DataProvider = (props) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const consultarBodegas = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const json = await axios.get(URL + "bodegas/consultar", {
+        headers: { authorization: token },
+      });
+      if (json.status === 200) {
+        setBodegas(json.data);
+      } else {
+        setBodegas([]);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   /**
    *se encarga de validar credenciales y enviar token para consultas posteriores
@@ -118,7 +135,9 @@ const DataProvider = (props) => {
   /**
    * se encarga de cargar los parametros usados en la aplicacion
    */
-  const cargarParametros = async () => {};
+  const cargarParametros = async () => {
+    consultarBodegas();
+  };
 
   /**
    * valida el inicio de session con base al token local
@@ -494,9 +513,15 @@ const DataProvider = (props) => {
 
   /// logica modal detalle pedido
 
-  const enviarDatosModalEditarPedidos = (data) => {
+  const enviarDatosModalEditarPedidos = async (data) => {
+    const token = localStorage.getItem("token");
+
+    const items = await axios.get(URL + "articulos/consultar/stock", {
+      headers: { authorization: token },
+      params: { items: data.Items },
+    });
     llenarEncabezadoModalPedido();
-    setDataModalEditar(data.Items);
+    setDataModalEditar(items.data);
     setDataPedidoEditar(data);
   };
 
@@ -521,6 +546,17 @@ const DataProvider = (props) => {
         title: "Cantidad",
         dataIndex: "Cantidad",
         key: "Cantidad",
+      },
+      {
+        title: "Stock",
+        dataIndex: "Balance",
+        key: "Balance",
+      },
+      ,
+      {
+        title: "Bodega",
+        dataIndex: "BodegaNombre",
+        key: "BodegaNombre",
       },
       {
         title: "Total",
@@ -556,7 +592,6 @@ const DataProvider = (props) => {
   };
 
   const confirmoAccion = () => {
-    console.log(borrar);
     let data = [].slice.call(dataModalEditar);
     data.splice(borrar, 1);
     setDataModalEditar(data);
@@ -719,6 +754,7 @@ const DataProvider = (props) => {
         cosultarClienteNombre,
         datosArticulo,
         calcularDescuento,
+        bodegas,
       }}
     >
       {props.children}

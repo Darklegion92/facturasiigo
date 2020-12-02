@@ -11,6 +11,7 @@ import {
   InputNumber,
   Typography,
   Select,
+  bodegas,
 } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import "./tabla.css";
