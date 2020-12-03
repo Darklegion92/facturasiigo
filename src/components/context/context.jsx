@@ -7,7 +7,7 @@ export const DataContext = React.createContext();
 
 const DataProvider = (props) => {
   /** esto se debe poner en un archivo de configuracion */
-  const URL = "http://localhost:8085/";
+  const URL = "http://192.168.0.101:8085/";
 
   // const [logeado, setLogeado] = useState(false);
   const [logeado, setLogeado] = useState(false);
@@ -67,7 +67,7 @@ const DataProvider = (props) => {
       if (json.status === 200) {
         setBodegas(json.data);
       } else {
-        setBodegas([]);
+        // setBodegas([]);
       }
     } catch (e) {
       console.log(e);

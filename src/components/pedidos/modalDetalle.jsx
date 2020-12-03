@@ -40,6 +40,7 @@ export const ModalDetalle = (props) => {
     datosArticulo,
     productosData,
     calcularDescuento,
+    bodegas,
   } = props;
 
   const refCodigo = useRef(null);
@@ -252,7 +253,7 @@ export const ModalDetalle = (props) => {
                 />
               </Form.Item>
             </Col>
-            <Col className="gutter-row" span={10}>
+            <Col className="gutter-row" span={8}>
               <Form.Item label="Descripción:" name="descripcion">
                 <Select
                   ref={refDescripcion}
@@ -296,6 +297,27 @@ export const ModalDetalle = (props) => {
               <Form.Item label="Total" name="total">
                 <Text>$ {totalArt}</Text>
               </Form.Item>
+            </Col>
+            <Col className="gutter-row" span={3}>
+            <Form.Item
+								style={{ alignItems: 'center' }}
+								label='Bodegas'
+								name='bodegas'
+								>
+								<Select style={{ width: 140}}>
+                  {(bodegas) ?
+                  (
+                    bodegas.map( data => {
+                      const {Id, Description}=data
+                     return <Option  key={Id}>{Description}</Option>
+                    }
+                    )
+                  )
+                : (
+                  null
+                )}
+								</Select>
+							</Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>

@@ -54,8 +54,8 @@ export const App = () => {
     calcularDescuento,
     editar,
     editoDatos,
+    bodegas
   } = useContext(DataContext);
-
   return (
     <>
       <BrowserRouter>
@@ -139,6 +139,7 @@ export const App = () => {
           onSearch={cosultarArticuloNombre}
           seleccionarArticulo={seleccionarArticulo}
           calcularDescuento={calcularDescuento}
+          bodegas={bodegas}
         />
       ) : null}
       <Confirmacion
@@ -148,12 +149,14 @@ export const App = () => {
         mensaje={mensajeModal}
         editar={editar}
         editoDatos={editoDatos}
+        bodegas={bodegas}
       />
       <Confirmacion
         visibleModalConfirmacion={visibleModalConfirmacionItemFactura}
         toggleConfirmar={toggleConfirmarItemFactura}
         confirmoAccion={confirmoAccionItemFactura}
         mensaje={mensajeModal}
+        bodegas={bodegas}
       />
     </>
   );
