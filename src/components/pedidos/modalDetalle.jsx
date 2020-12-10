@@ -12,6 +12,7 @@ import {
   Typography,
   Select,
   bodegas,
+  message,
 } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import "./tabla.css";
@@ -25,6 +26,7 @@ export const ModalDetalle = (props) => {
   const [direccion, setDireccion] = useState("");
   const [telefono, setTelefono] = useState("");
   const [descuento, setDescuento] = useState("");
+  const [bodega, setBodega] = useState();
   const {
     consultarArticuloCodigo,
     visibleDetalle,
@@ -86,6 +88,11 @@ export const ModalDetalle = (props) => {
     calcularDescuento(descuento);
   };
 
+  const onChangeBodegas = (e) => {
+    const bod = bodegas.filter((bodega) => bodega.Id == e);
+    setBodega(bod[0]);
+  };
+
   const onPressEnter = async (e) => {
     e.preventDefault();
     const value = e.target.value;
@@ -99,12 +106,19 @@ export const ModalDetalle = (props) => {
         if (value) refValor.current.select();
         break;
       case "valorUnitario":
-        if (total && totalArt > 0) {
-          const respItem = await agregarItem(valor, cantidad, totalArt);
+        if (total && totalArt > 0 && bodega) {
+          const respItem = await agregarItem(
+            valor,
+            cantidad,
+            totalArt,
+            bodega.Description
+          );
           if (respItem) {
             setTotalArt(0);
             refCodigo.current.select();
           }
+        } else {
+          message.warning("Debe seleccionar una bodega");
         }
         break;
       default:
@@ -242,6 +256,26 @@ export const ModalDetalle = (props) => {
                 <Text>{dataPedidoEditar.DiasCredito}</Text>
               </Form.Item>
             </Col>
+            <Col
+              className="gutter-row"
+              span={3}
+              style={{ marginRight: "38px" }}
+            >
+              <Form.Item
+                style={{ alignItems: "center" }}
+                label="Bodegas"
+                name="bodegas"
+              >
+                <Select style={{ width: 140 }} onChange={onChangeBodegas}>
+                  {bodegas
+                    ? bodegas.map((data) => {
+                        const { Id, Description } = data;
+                        return <Option key={Id}>{Description}</Option>;
+                      })
+                    : null}
+                </Select>
+              </Form.Item>
+            </Col>
             <Col className="gutter-row" span={3}>
               <Form.Item label="Código:" name="codigo">
                 <Input
@@ -297,27 +331,6 @@ export const ModalDetalle = (props) => {
               <Form.Item label="Total" name="total">
                 <Text>$ {totalArt}</Text>
               </Form.Item>
-            </Col>
-            <Col className="gutter-row" span={3}>
-            <Form.Item
-								style={{ alignItems: 'center' }}
-								label='Bodegas'
-								name='bodegas'
-								>
-								<Select style={{ width: 140}}>
-                  {(bodegas) ?
-                  (
-                    bodegas.map( data => {
-                      const {Id, Description}=data
-                     return <Option  key={Id}>{Description}</Option>
-                    }
-                    )
-                  )
-                : (
-                  null
-                )}
-								</Select>
-							</Form.Item>
             </Col>
           </Row>
           <Row gutter={16}>

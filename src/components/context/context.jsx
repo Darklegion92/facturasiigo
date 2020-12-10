@@ -7,7 +7,7 @@ export const DataContext = React.createContext();
 
 const DataProvider = (props) => {
   /** esto se debe poner en un archivo de configuracion */
-  const URL = "http://192.168.0.101:8085/";
+  const URL = "http://localhost:8085/";
 
   // const [logeado, setLogeado] = useState(false);
   const [logeado, setLogeado] = useState(false);
@@ -414,7 +414,7 @@ const DataProvider = (props) => {
    * @param {Number} cantidad
    * @param {Number} totalArt
    */
-  const agregarItem = async (valor, cantidad, totalArt) => {
+  const agregarItem = async (valor, cantidad, totalArt, bodega) => {
     try {
       setDataModalEditar([
         ...dataModalEditar,
@@ -424,6 +424,7 @@ const DataProvider = (props) => {
           Description: datosArticulo.Description,
           PriceList1: valor,
           Total: totalArt,
+          Bodega: bodega,
         },
       ]);
       setDatosArticulo();
@@ -555,8 +556,8 @@ const DataProvider = (props) => {
       ,
       {
         title: "Bodega",
-        dataIndex: "BodegaNombre",
-        key: "BodegaNombre",
+        dataIndex: "Bodega",
+        key: "Bodega",
       },
       {
         title: "Total",
