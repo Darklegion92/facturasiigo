@@ -1,0 +1,166 @@
+.formato-facturaventa {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 25px;
+}
+.formato-facturaventa .encabezado {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+.formato-facturaventa > .encabezado .col-2 {
+  margin-top: 20px;
+  width: 500px;
+}
+
+.formato-facturaventa .encabezado .col-1 h4 {
+  font-size: 10px;
+  font-weight: bold;
+  text-align: center;
+}
+.formato-facturaventa .encabezado .col-2 h4 {
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 8px;
+  text-align: center;
+}
+
+.formato-facturaventa .numeracion h3 {
+  font-weight: bold;
+}
+.formato-facturaventa .cuerpo {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.formato-facturaventa .cuerpo .datos-persona {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border: solid 1px black;
+}
+
+.formato-facturaventa .cuerpo .datos-persona .col-1,
+.formato-facturaventa .cuerpo .datos-persona .col-2 {
+  font-size: 10px;
+  line-height: 15px;
+  width: 50%;
+  padding: 7px;
+  padding-bottom: 0px;
+}
+
+.formato-facturaventa .cuerpo .datos-persona .col-1 span,
+.formato-facturaventa .cuerpo .datos-persona .col-2 span {
+  font-weight: bold;
+}
+
+.formato-facturaventa .cuerpo .datos-persona .col-2 {
+  border-left: solid 1px black;
+}
+
+.formato-facturaventa .cuerpo .tabla {
+  display: flex;
+  flex-direction: column;
+  border: solid 1px black;
+  margin-top: 3px;
+  font-size: 10px;
+}
+
+.formato-facturaventa .cuerpo .tabla .encabezado {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+}
+
+.formato-facturaventa .cuerpo .tabla .col-1,
+.formato-facturaventa .cuerpo .tabla .col-8,
+.formato-facturaventa .cuerpo .tabla .col-7 {
+  width: 15%;
+}
+.formato-facturaventa .cuerpo .tabla .col-2 {
+  width: 30%;
+}
+.formato-facturaventa .cuerpo .tabla .col-3,
+.formato-facturaventa .cuerpo .tabla .col-4,
+.formato-facturaventa .cuerpo .tabla .col-5,
+.formato-facturaventa .cuerpo .tabla .col-6 {
+  width: 6%;
+}
+/*items de la tabla de la factura*/
+.formato-facturaventa .cuerpo .tabla .cuerpo .item {
+  display: flex;
+  flex-direction: row;
+  border-top: solid 1px black;
+  justify-content: center;
+  align-items: center;
+}
+/*fon de los items de la factura*/
+/*pie de la tabla de la factura*/
+.formato-facturaventa .cuerpo .tabla .pie {
+  display: flex;
+  flex-direction: row;
+  border-top: solid 1px black;
+}
+.formato-facturaventa .cuerpo .tabla .pie h5,
+.formato-facturaventa .cuerpo .tabla .pie h4 {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.formato-facturaventa .cuerpo .tabla .pie .col-1 h5 {
+  font-size: 10px;
+}
+.formato-facturaventa .cuerpo .tabla .pie h4 {
+  border-top: solid 1px black;
+}
+
+.formato-facturaventa .cuerpo .tabla .pie .col-1 {
+  width: 69%;
+  border-right: solid 1px black;
+}
+
+.formato-facturaventa .cuerpo .tabla .pie .col-1 h5,
+.formato-facturaventa .cuerpo .tabla .pie .col-1 h4 {
+  padding-left: 10px;
+}
+
+.formato-facturaventa .cuerpo .tabla .pie .col-2,
+.formato-facturaventa .cuerpo .tabla .pie .col-3 {
+  width: 15.5%;
+}
+.formato-facturaventa .cuerpo .tabla .pie .col-2 h4,
+.formato-facturaventa .cuerpo .tabla .pie .col-2 h5 {
+  padding-left: 10px;
+}
+
+.formato-facturaventa .cuerpo .tabla .pie .col-3 h4,
+.formato-facturaventa .cuerpo .tabla .pie .col-3 h5 {
+  display: flex;
+  padding-right: 10px;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/*fin del pie de la tabla de la factura*/
+
+/*inicia el pie de la factura*/
+.formato-facturaventa > .pie {
+  margin-top: 5px;
+  border: solid 1px black;
+  padding: 5px;
+}
+
+.formato-facturaventa > .pie > h4 {
+  font-size: 10px;
+}
+
+.formato-facturaventa > .pie > h4 > span {
+  font-size: 12px;
+  font-weight: bold;
+}

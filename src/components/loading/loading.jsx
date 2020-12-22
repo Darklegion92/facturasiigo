@@ -14,6 +14,7 @@ export const Loading = () => {
 			width='300px'
 			bodyStyle={{ backgroundColor: 'transparent' }}
 			style={{ backgroundColor: 'transparent' }}
+			zIndex={10000}
 			closable={false}>
 			<Row
 				justify='center'
