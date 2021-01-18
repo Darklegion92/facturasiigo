@@ -12,6 +12,7 @@ import { Layout, Menu, Modal } from 'antd'
 import { ModalDetalle } from './components/pedidos/modalDetalle'
 import { Confirmacion } from './components/modal/confirmacion'
 import { Factura } from './components/factura/factura'
+import Updates from './components/Updates'
 
 export const App = () => {
   const { Header, Content } = Layout
@@ -67,6 +68,9 @@ export const App = () => {
                 <Menu.Item key='1'>
                   <Link to='/pedidos'>Orden</Link>
                 </Menu.Item>
+                <Menu.Item key='2'>
+                  <Link to='/updates'>Actualizaciones</Link>
+                </Menu.Item>
               </Menu>
             </Header>
             <Content style={{ padding: '0 50px' }}>
@@ -106,6 +110,12 @@ export const App = () => {
                       datosCliente={datosCliente}
                       datosArticulo={datosArticulo}
                     />
+                  }
+                />
+                <ProtecRoutes
+                  path='/updates'
+                  children={
+                    <Updates/>
                   }
                 />
                 <Route component={Default} />
