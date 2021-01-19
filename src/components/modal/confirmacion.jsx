@@ -40,15 +40,14 @@ export const Confirmacion = props => {
         value.precio * value.cantidad -
         value.precio * value.cantidad * (desc / 100)
       editado.DiscountValue = value.precio * value.cantidad * (desc / 100)
-    } else {
+    } else if (editado.DiscountValue) {
       editado.Total = value.precio * value.cantidad - editado.DiscountValue
-    }
+    } else editado.Total = value.precio * value.cantidad
 
     const bod = bodegas.filter(bodega => bodega.Id == value.bodega)
     if (bod.length > 0) {
       editado.Bodega = bod[0].Description
     }
-
     editoDatos()
   }
 
