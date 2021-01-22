@@ -28,7 +28,9 @@
   text-align: center;
 }
 
-.formato-facturaventa .numeracion h3 {
+.formato-facturaventa .encabezado .col-2 h3 {
+  font-size: 30px;
+  text-align:center;
   font-weight: bold;
 }
 .formato-facturaventa .cuerpo {

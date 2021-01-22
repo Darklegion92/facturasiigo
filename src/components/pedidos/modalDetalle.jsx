@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 import { useReactToPrint } from 'react-to-print'
-import FormatoFactura from '../reports/FormatoFactura'
+import FormatoRemision from '../reports/FormatoRemision'
 
 import {
   Alert,
@@ -137,8 +137,28 @@ export const ModalDetalle = props => {
   }
 
   const facturar = async () => {
-    const factura = await actualizarDataPedido(true, direccion, telefono)
-    setImpresion(factura)
+    actualizarDataPedido(true, direccion, telefono)
+  }
+
+  const imprimir = async () => {
+    //actualizarDataPedido(false, direccion, telefono)
+    let desc = 0
+    await dataModalEditar.forEach(item => {
+      desc = item.DiscountValue ? desc + item.DiscountValue : 0
+    })
+
+    setImpresion({
+      Header: {
+        Address: direccion,
+        CreditDays: dataPedidoEditar.DiasCredito,
+        FullName: dataPedidoEditar.FullName,
+        Identification: dataPedidoEditar.Identification,
+        Phone: telefono,
+        Total: total,
+        Discount: desc
+      },
+      Items: dataModalEditar
+    })
     handlePrint()
   }
 
@@ -387,26 +407,34 @@ export const ModalDetalle = props => {
                 CALCULAR
               </Button>
             </Col>
-            <Col className='gutter-row' span={8}>
+            <Col className='gutter-row' span={6}>
               <Form.Item>
                 <Button htmlType='submit' onClick={guardar}>
                   Guardar
                 </Button>
               </Form.Item>
             </Col>
-            <Col className='gutter-row' span={8}>
+            <Col className='gutter-row' span={6}>
               <Form.Item>
                 <Button htmlType='submit' onClick={facturar}>
                   Facturar
                 </Button>
               </Form.Item>
             </Col>
-            <Col className='gutter-row' span={8}>
+            <Col className='gutter-row' span={6}>
+              <Button
+                onClick={imprimir}
+                style={{ backgroundColor: 'orange', color: 'white' }}
+              >
+                Imprimir
+              </Button>
+            </Col>
+            <Col className='gutter-row' span={6}>
               <Button onClick={handleCancel}>Cancelar</Button>
             </Col>
           </Row>
         </Form>
-        <FormatoFactura ref={componentRef} datos={impresion} />
+        <FormatoRemision ref={componentRef} datos={impresion} />
       </Modal>
     </>
   )

@@ -8,8 +8,8 @@ export const DataContext = React.createContext()
 
 const DataProvider = props => {
   /** esto se debe poner en un archivo de configuracion */
-  ///const URL = "http://45.82.72.196:8089/";
-  const URL = 'http://localhost:8089/'
+  const URL = "http://45.82.72.196:8089/";
+  //const URL = 'http://localhost:8089/'
   // const [logeado, setLogeado] = useState(false);
   const [logeado, setLogeado] = useState(false)
   const [visibleModal, setVisibleModal] = useState({ visible: false })
@@ -86,8 +86,8 @@ const DataProvider = props => {
 
       try {
         const json = await axios.post(URL + 'usuario/login', datos)
-        const data = json.data
         if (json.status === 200) {
+          const data = json.data
           setVisibleLoading(false)
           setLogeado(true)
           localStorage.setItem('usuarioSesion', JSON.stringify(true))
@@ -499,7 +499,7 @@ const DataProvider = props => {
           Cantidad: cantidad,
           Code: datosArticulo.Code,
           Description: datosArticulo.Description,
-          PriceList1: valor,
+          PriceList4: valor,
           Total: totalArt,
           Bodega: bodega
         }
@@ -539,7 +539,7 @@ const DataProvider = props => {
       const datos = dataModalEditar
 
       datos.forEach(dato => {
-        const total = dato.Cantidad * dato.PriceList1
+        const total = dato.Cantidad * dato.PriceList4
         dato.DiscountPercentage = desc
         dato.DiscountValue = total * (desc / 100)
         dato.Total = total - total * (desc / 100)
@@ -624,8 +624,8 @@ const DataProvider = props => {
       },
       {
         title: 'Precio',
-        dataIndex: 'PriceList1',
-        key: 'PriceList1'
+        dataIndex: 'PriceList4',
+        key: 'PriceList4'
       },
       {
         title: 'Cantidad',

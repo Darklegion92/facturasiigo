@@ -74,7 +74,7 @@ export const Confirmacion = props => {
               fields={
                 editar && [
                   { name: 'cantidad', value: editar.Cantidad },
-                  { name: 'precio', value: editar.PriceList1 },
+                  { name: 'precio', value: editar.PriceList4 },
                   { name: 'bodega', value: editar.Bodega },
                   {
                     name: 'DiscountPercentage',
